@@ -2,9 +2,10 @@
 import IPython
 from pathlib import Path
 import re
+import time
 ih_len = 20 # ipython history max length
-# log_filepath = Path('/data/DSST/scripts/ipython.log')
-log_filepath = Path.cwd().joinpath('test.log')
+log_filepath = Path('/data/DSST/scripts/ipython.log')
+# log_filepath = Path.cwd().joinpath('test.log')
 if not log_filepath.exists():
     log_filepath.write_text('# IPython log\n')
 
@@ -50,13 +51,14 @@ def get_cmd_str(tup):
     return str(tup[0]) + ' ' + str(tup[1]) + ' ' + tup[2] + '\n\n'
 # --------------------------
 
+while True: # exited by user
+        # get the current tail of the log file and the ipython history accessor
+    hist_accessor = IPython.core.history.HistoryAccessor()
+    log_hist = get_log(log_filepath)
 
-# get the current tail of the log file and the ipython history accessor
-hist_accessor = IPython.core.history.HistoryAccessor()
-log_hist = get_log(log_filepath)
-
-# write any additions if they exist
-with log_filepath.open('a') as f:
-    [f.write(get_cmd_str(tup)) \
-    for tup in hist_accessor.get_tail(ih_len) \
-    if ('\n'+str(tup[0])+ ' '+str(tup[1])) not in log_hist]
+    # write any additions if they exist
+    with log_filepath.open('a') as f:
+        [f.write(get_cmd_str(tup)) \
+        for tup in hist_accessor.get_tail(ih_len) \
+        if ('\n'+str(tup[0])+ ' '+str(tup[1])) not in log_hist]
+    time.sleep(30)
