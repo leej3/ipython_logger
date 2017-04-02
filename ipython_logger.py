@@ -4,8 +4,8 @@ from pathlib import Path
 import re
 import time
 ih_len = 20 # ipython history max length
-log_filepath = Path('/data/DSST/scripts/ipython.log')
-# log_filepath = Path.cwd().joinpath('test.log')
+
+log_filepath = Path.cwd().joinpath('test.log')
 if not log_filepath.exists():
     log_filepath.write_text('# IPython log\n')
 
